@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     ListView mListView;
     String[] heroNames;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Call<List<Hero>> call = api.getHeroes(); // creating object for Call
 
         call.enqueue(new Callback<List<Hero>>() { //calling api
+
             @Override
             public void onResponse(Call<List<Hero>> call, Response<List<Hero>> response) {
 
@@ -47,16 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 for (int i =0; i<heroes.size(); i++){
 
                     heroNames[i] = heroes.get(i).getName();
-
-//                0   for (Hero h : heroes){
-//                0       Log.d("name", h.getBio());
-//                0       Log.d("realname", h.getRealname());
-//                0       Log.d("bio", h.getImageurl());
-//                0       Log.d("createdby", h.getCreatedby());
-//                0       Log.d("firstappearance", h.getFirstappearance());
-//                0       Log.d("name", h.getPublisher());
-//                0   }
-
                 }
 
                 mListView.setAdapter( //creating listview
@@ -73,5 +67,27 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
+//        Call<Hero> heroCall = api.putdata("tgrfdhfd", "khgjhf"); //creating object for call
+
+//        heroCall.enqueue(new Callback<Hero>() { //calling api
+
+//            @Override
+//            public void onResponse(Call<Hero> call, Response<Hero> response) {
+
+//            }
+
+//            @Override
+//            public void onFailure(Call<Hero> call, Throwable t) {
+
+//            }
+//        });
+
+
+
+
+
     }
+
 }
