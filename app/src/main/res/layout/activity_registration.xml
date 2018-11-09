@@ -4,8 +4,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".RegistrationActivity"
-    android:padding="20dp"
-    android:gravity="c">
+    android:padding="20dp">
 
     <TextView
         android:text="name"

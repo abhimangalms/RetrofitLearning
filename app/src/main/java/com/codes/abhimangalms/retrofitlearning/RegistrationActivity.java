@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,7 +22,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     Button mButonRegister;
 
-    public static final String ROOT_URL = "http://192.168.1.15";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,47 +34,55 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         mButonRegister = findViewById(R.id.buttonRegister);
 
+        mButonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertUser(); //method to insert data into database
+            }
+        });
+
     }
 
-    private void insertUser(){
+    private void insertUser() {
+
+        String inputName = mEditTextName.getText().toString();
+        String inputUsername = mEditTextUsername.getText().toString();
+        String inputPassword = mEditTextPassword.getText().toString();
+        String inputEmail = mEditTextEmail.getText().toString();
 
         //code to insert data into the database
 
         //creating Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ROOT_URL)
+                .baseUrl(Api.BASE_URL_POST)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         Api api = retrofit.create(Api.class);
 
-        api.insertUser(
+        Call<Hero> heroCall = api.insertUser(inputName, inputUsername, inputPassword, inputEmail); //creating object for call
 
-                mEditTextName.getText().toString(),
-                mEditTextUsername.getText().toString(),
-                mEditTextPassword.getText().toString(),
-                mEditTextEmail.getText().toString(),
+        heroCall.enqueue(new Callback<Hero>() { //calling api
 
-                //creating a callback
-                new Callback<Response>() {
-                    @Override
-                    public void onResponse(Call<Response> call, Response<Response> response) {
-                        
-                    }
+            @Override
+            public void onResponse(Call<Hero> call, Response<Hero> response) {
 
-                    @Override
-                    public void onFailure(Call<Response> call, Throwable t) {
+                Toast.makeText(RegistrationActivity.this, "registered", Toast.LENGTH_SHORT).show();
+            }
 
-                    }
-                }
-        );
+            @Override
+            public void onFailure(Call<Hero> call, Throwable t) {
 
-
+                Toast.makeText(RegistrationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
     @Override
     public void onClick(View v) {
+
+        insertUser();
 
     }
 }
